@@ -1,4 +1,4 @@
-###Потенциальные фреймворки для преобразования голоса в текст
+### Потенциальные фреймворки для преобразования голоса в текст
 - Vosk - https://github.com/alphacep/vosk-api, https://alphacephei.com/vosk/
 - CMUSphinxs - https://cmusphinx.github.io
 - SpeechRecognition - https://github.com/Uberi/speech_recognition
@@ -9,17 +9,17 @@
 - Pywit - https://github.com/wit-ai/pywit
 - Apiai-python-client - https://github.com/nivcaner/apiai-python-client
 
-###Сферы
+### Сферы
 
 - Ядерные образовательные программы
 - Атомная отрасль
 
-###Языки
+### Языки
 
 - Русский
 - Английский
 
-###Критерии
+### Критерии
 
 - Степень реализации (готовности) - 30 баллов
 - Наличие и качество описания кода - 20 баллов

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% import 'bootstrap/wtf.html' as wtf %}
+{#{% import "macros/_patination.html" as page_macros %}#}
+
+{#
+<link rel="stylesheet" href="/static/style.css" type="text/css">#}
+
+{% block content %}
+
+<div class="container" align="center">
+    <div class="card">
+        <form action="" method="post" enctype="multipart/form-data" novalidate>
+            {{ upload_form.hidden_tag() }}
+            {% for field in [upload_form.language, upload_form.file] %}
+            <p>
+            <h3>{{ field.label }}</h3>
+            {{ field }}
+            {% for error in field.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            {% endfor %}
+            <div style="margin-top: 50px;">
+                <p>{{ upload_form.submit(class_="btn btn-primary") }}</p>
+            </div>
+            {% for error in upload_form.submit.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+        </form>
+    </div>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class=flashes>
+    {% for category, message in messages %}
+    <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+{% endblock %}

@@ -21,6 +21,8 @@ APP_NAME = 'hackatom2021'
 UPLOAD_FOLDER = 'audio'
 ALLOWED_AUDIO_EXTENSIONS = {'wav', 'mp3'}
 SECRET_KEY = 'hackatom2021_vihuhol'
+DOT_DELTA_TIME = 0.7
+PARAGRAPH_DELTA_TIME = 1.1
 
 
 def time_left(from_time):

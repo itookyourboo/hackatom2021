@@ -32,7 +32,7 @@ def transcribe_file(file_path, language=LANGUAGE_RU):
     from_time = time()
 
     client = speech.SpeechClient()
-    file_name = mp3_to_wav(file_path)
+    file_name = convert_to_wav(file_path)
     time_left(from_time)
 
     gcs_uri = upload_to_cloud(file_name, file_name)

@@ -8,6 +8,8 @@ LANGUAGE_RU = 'ru-RU'
 BUCKET_NAME = 'korzina'
 SAMPLE_RATE = 8000
 RECOGNITION_TIMEOUT = 120
+DOT_DELTA_TIME = 0.7
+PARAGRAPH_DELTA_TIME = 1.1
 
 
 def time_left(from_time):

@@ -41,12 +41,14 @@ def index():
     return render_template('index.html', title=APP_NAME, upload_form=upload_form)
 
 
-@app.route('/analyze', methods=['GET', 'POST'])
+@app.route('/analyze/<filename>/<language>', methods=['GET'])
 def analyze(filename='audio.mp3', language='en-US'):
+    print(filename, language)
     results = transcribe_file(os.path.join(UPLOAD_FOLDER, filename), language)
     analyzer = Analyzer(results)
-
-    return analyzer.get_text()
+    text = analyzer.get_text()
+    return f"<i>Confidence: {int(10000 * analyzer.average_confidence()) / 100}%</i>\n" \
+           f"{text}".replace('\n', '<br><br>')
 
 
 class AddAudioForm(FlaskForm):

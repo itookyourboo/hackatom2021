@@ -74,11 +74,8 @@ def find_str(words):
                 transcriptions[i][-1] = max(float(1 + 0.15 * cnt), transcriptions[i][-1])
 
 
-def text_treatment(file_name, model_language):
-    text = ''
-    words = vosk(file_name, model_language)
 
-    find_str(words)
+def terms(words):
     interrupt = 0
     for i in range(len(words)):
         if (interrupt):
@@ -112,7 +109,12 @@ def text_treatment(file_name, model_language):
             if (flag):
                 interrupt = j - 1
                 break
+    return words
 
+
+
+def punctuation(words):
+    text = ''
     intervals = []
     for i in range(1, len(words)):
         intervals.append(words[i].start - words[i - 1].end)
@@ -135,6 +137,14 @@ def text_treatment(file_name, model_language):
             flag = 1
         text += ' '
     text += words[-1].value + '.'
+    return text
+
+def text_treatment(file_name, model_language):
+    words = vosk(file_name, model_language)
+
+    find_str(words)
+    words = terms(words)
+    text = punctuation(words)
 
     return text
 

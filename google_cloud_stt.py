@@ -55,9 +55,15 @@ def transcribe_file(file_path, language=LANGUAGE_RU):
 
 
 if __name__ == '__main__':
-    results = transcribe_file('data/аудиозапись.mp3', LANGUAGE_RU)
+    file = 'data/аудиозапись.mp3'
+    lang = LANGUAGE_RU
+
+    results = transcribe_file(file, lang)
     analyzer = GoogleCloudResultsAnalyzer(results)
     if DEBUG:
         print(analyzer.get_debug_info())
-    print(analyzer.get_text())
+    text = analyzer.get_text()
+    file_name = file.split('/')[-1]
+    with open(f'results/{file_name}.txt', 'w') as file:
+        file.write(analyzer.get_formatted_text(text))
     print('Average confidence:', analyzer.average_confidence())

@@ -4,7 +4,7 @@ import wave
 import json
 from word import Word
 from analyzer import VoskResultsAnalyzer as Analyzer
-from util import convert_to_wav
+from util import convert_to_wav, READ_FRAMES, DEBUG
 
 
 def vosk(file_name, model_language):
@@ -21,26 +21,34 @@ def vosk(file_name, model_language):
     rec = KaldiRecognizer(model, wf.getframerate())
 
     while True:
-        data = wf.readframes(2000)
+        data = wf.readframes(READ_FRAMES)
         if len(data) == 0:
             break
         if rec.AcceptWaveform(data):
             rc = json.loads(rec.Result())
-            for i in rc['result']:
-                word = Word()
-                word.start = i['start']
-                word.end = i['end']
-                word.value = i['word']
-                word.conf = i['conf']
-                words.append(word)
+            if 'result' in rc:
+                for i in rc['result']:
+                    word = Word()
+                    word.start = i['start']
+                    word.end = i['end']
+                    word.value = i['word']
+                    word.conf = i['conf']
+                    words.append(word)
+
+                if DEBUG:
+                    print(rc['text'])
 
     return words
 
 
 if __name__ == '__main__':
-    file = 'аудиозапись.mp3'
-    words = vosk(file, 'ru')
+    file = 'data/audio.mp3'
+    lang = 'en'
+    words = vosk(file, lang)
 
-    analyzer = Analyzer(words)
+    analyzer = Analyzer(words, lang)
     print(analyzer.to_plain_text())
-    analyzer.to_docx(file)
+
+    file_name = file.split('/')[-1]
+
+    analyzer.to_docx(f'results/{file_name}')

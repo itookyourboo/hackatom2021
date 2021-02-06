@@ -1,7 +1,7 @@
 from docx import Document
 from docx.shared import RGBColor
 
-from util import DOT_DENSITY, COMMA_DENSITY, PARAGRAPH_DENSITY
+from util import DENSITY, PARAGRAPH_EVERY_N_SENTENCES
 
 
 class GoogleCloudResultsAnalyzer:
@@ -21,28 +21,41 @@ class GoogleCloudResultsAnalyzer:
         return '\n'.join(arr)
 
     def get_text(self):
-        return '\n'.join([result.alternatives[0].transcript for result in self.results])
+        return '\n'.join([result.alternatives[0].transcript.strip() for result in self.results])
+
+
+    def get_formatted_text(self, text):
+        sentences = text.split('. ')
+        result = []
+        for i, sentence in enumerate(sentences):
+            result.append(sentence)
+            if i % PARAGRAPH_EVERY_N_SENTENCES == PARAGRAPH_EVERY_N_SENTENCES - 1:
+                result.append('.\n')
+            else:
+                result.append('. ')
+
+        return ''.join(result)
 
 
 class VoskResultsAnalyzer:
-    def __init__(self, words):
+    def __init__(self, words, lang='ru'):
         self.words = words
+        self.lang = lang
 
     def get_punctuation(self):
-        WORDS_NUM = len(self.words)
+        density = DENSITY[self.lang]
+        TOTAL_WORDS = len(self.words)
 
         self.words[0].value = self.words[0].value.capitalize()
-
         punctuation = {}
         pairs = []
         for i in range(1, len(self.words)):
             pairs.append((self.words[i].start - self.words[i - 1].end, i - 1))
 
         pairs.sort(key=lambda x: x[0])
-
-        dots_count = int(WORDS_NUM * DOT_DENSITY)
-        comma_count = int(WORDS_NUM * COMMA_DENSITY)
-        paragraph_count = int(WORDS_NUM * PARAGRAPH_DENSITY)
+        dots_count = int(TOTAL_WORDS * density['dot'])
+        comma_count = int(TOTAL_WORDS * density['comma'])
+        paragraph_count = int(TOTAL_WORDS * density['paragraph'])
 
         counter = 0
 
@@ -58,10 +71,12 @@ class VoskResultsAnalyzer:
 
         return punctuation
 
-
     def get_confidence(self):
         return sum(word.conf for word in self.words) / len(self.words)
 
+    def get_confidence_percent(self):
+        confidence = self.get_confidence()
+        return int(confidence * 10000) / 100
 
     def to_plain_text(self):
         punctuation = self.get_punctuation()

@@ -4,6 +4,7 @@ from analyzer import GoogleCloudResultsAnalyzer
 from util import *
 
 
+# Загрузка файла на облако, получение ссылки на файл в облаке
 def upload_to_cloud(source, blob_name):
     source_file_name = source
     destination_blob_name = blob_name
@@ -18,6 +19,7 @@ def upload_to_cloud(source, blob_name):
     return f'gs://{BUCKET_NAME}/{blob_name}'
 
 
+# Удаление файла с облака
 def delete_blob(blob_name):
     storage_client = storage.Client()
 
@@ -28,6 +30,7 @@ def delete_blob(blob_name):
     print(f'File {blob_name} was deleted')
 
 
+# Обработка аудиофайла
 def transcribe_file(file_path, language=LANGUAGE_RU):
     from_time = time()
 

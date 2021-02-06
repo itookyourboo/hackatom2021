@@ -11,6 +11,7 @@ bot = telepot.Bot(TOKEN)
 session = {}
 
 
+# Получение ссылки на аудио
 def get_file_path(token, file_id):
     get_path = get('https://api.telegram.org/bot{}/getFile?file_id={}'.format(token, file_id))
     json_doc = loads(get_path.text)
@@ -23,6 +24,7 @@ def get_file_path(token, file_id):
     return 'https://api.telegram.org/file/bot{}/{}'.format(token, file_path)
 
 
+# Получение языка из пользовательского сообщения
 def get_language_from_caption(caption):
     if not caption:
         return None
@@ -41,9 +43,7 @@ def handle(msg):
 
     if chat_id not in session:
         session[chat_id] = {
-            'lang': 'ru',
-            'speed': 1.0,
-            'status': 'nothing'
+            'lang': 'ru'
         }
     user_state = session[chat_id]
 
@@ -79,12 +79,14 @@ def handle(msg):
             bot.sendMessage(chat_id, f'Выбран язык: {user_state["lang"]}')
 
 
+# Стартовое сообщение
 def show_start_message(chat_id):
     bot.sendMessage(chat_id, 'Привет!\n'
                              'Чтобы перевести аудиозапись в текст, пришлите мне её документом.\n'
                              'Чтобы выбрать язык, напишите ru или en при отправке документа или заранее.')
 
 
+# Отправка результатов
 def send_results(chat_id, words, lang, file_name):
     analyzer = Analyzer(words, lang)
     with open(analyzer.to_docx(file_name), 'rb') as docx_file:

@@ -4,6 +4,7 @@ from docx.shared import RGBColor
 from util import DENSITY, PARAGRAPH_EVERY_N_SENTENCES
 
 
+# Анализатор результатов обработки аудиозаписи сервисом Google Cloud
 class GoogleCloudResultsAnalyzer:
     def __init__(self, results):
         self.results = results
@@ -23,7 +24,7 @@ class GoogleCloudResultsAnalyzer:
     def get_text(self):
         return '\n'.join([result.alternatives[0].transcript.strip() for result in self.results])
 
-
+    # Разделяет текст на абзацы
     def get_formatted_text(self, text):
         sentences = text.split('. ')
         result = []
@@ -37,11 +38,14 @@ class GoogleCloudResultsAnalyzer:
         return ''.join(result)
 
 
+# Анализатор результатов, полученных с помощью Vosk
+# На входе массив объектов Word
 class VoskResultsAnalyzer:
     def __init__(self, words, lang='ru'):
         self.words = words
         self.lang = lang
 
+    # Получение словаря пунктуации в формате {индекс: знак препинания}
     def get_punctuation(self):
         density = DENSITY[self.lang]
         TOTAL_WORDS = len(self.words)
@@ -71,6 +75,7 @@ class VoskResultsAnalyzer:
 
         return punctuation
 
+    # Среднее арифметическое "уверенностей"
     def get_confidence(self):
         return sum(word.conf for word in self.words) / len(self.words)
 
@@ -78,6 +83,7 @@ class VoskResultsAnalyzer:
         confidence = self.get_confidence()
         return int(confidence * 10000) / 100
 
+    # Экспорт списка Words в обычный текст
     def to_plain_text(self):
         punctuation = self.get_punctuation()
 
@@ -98,6 +104,7 @@ class VoskResultsAnalyzer:
 
         return '\n'.join(lines)
 
+    # Экспорт списка Words в формат docx
     def to_docx(self, file_name):
         document = Document()
 

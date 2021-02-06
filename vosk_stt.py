@@ -7,6 +7,7 @@ from analyzer import VoskResultsAnalyzer as Analyzer
 from util import convert_to_wav, READ_FRAMES, DEBUG
 
 
+# Обработка файла с помощью Vosk
 def vosk(file_name, model_language):
     if file_name.split('.')[-1] != 'wav':
         file_name = convert_to_wav(file_name)

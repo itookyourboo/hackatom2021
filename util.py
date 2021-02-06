@@ -36,3 +36,5 @@ def mp3_to_wav(file_path):
     sound.export(dst, format='wav', parameters=f'-ac 1 -ar {SAMPLE_RATE}'.split())
     print(f'File {file_path} was converted to {dst}')
     return dst
+
+mp3_to_wav("audio.mp3")

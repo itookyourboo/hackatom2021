@@ -13,19 +13,29 @@ LANGUAGES = [
 
 LANGUAGE_EN = 'en-US'
 LANGUAGE_RU = 'ru-RU'
-BUCKET_NAME = 'korzina'
 SAMPLE_RATE = 8000
+READ_FRAMES = 2000
 RECOGNITION_TIMEOUT = 120
 MAX_AUDIO_SIZE_MB = 32
 APP_NAME = 'hackatom2021'
 UPLOAD_FOLDER = 'audio'
 ALLOWED_AUDIO_EXTENSIONS = {'wav', 'mp3'}
-SECRET_KEY = 'hackatom2021_vihuhol'
 DOT_DELTA_TIME = 0.7
-DOT_DENSITY = 0.05
-COMMA_DENSITY = 0.08
-PARAGRAPH_DENSITY = DOT_DENSITY / 2.5
 PARAGRAPH_DELTA_TIME = 1.1
+PARAGRAPH_EVERY_N_SENTENCES = 3
+
+DENSITY = {
+    'ru': {
+        'dot': 0.05,
+        'comma': 0.08,
+        'paragraph': 0.02
+    },
+    'en': {
+        'dot': 0.05,
+        'comma': 0.04,
+        'paragraph': 0.025
+    }
+}
 
 
 def time_left(from_time):
